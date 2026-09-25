@@ -7,10 +7,12 @@ little games for the web, and how a modern, open-source "Flash MX" could be buil
 
 - **Feels like Flash MX:** draw vectors, convert them to symbols, animate them on a timeline
   with layers, and add scripts to frames, buttons and movie clips.
-- **HTML5-native output:** no SWF, no plugin, no emulator. A published movie is plain HTML +
-  JavaScript that draws with Canvas or SVG.
+- **HTML5-native output:** no SWF, no browser plugin, no emulator. Every movie ships with our
+  own small embedded player (plain JavaScript) and draws with Canvas or SVG.
 - **Runs great on iPhone and iPad:** touch, Retina screens, sound and full screen all work in
   Safari, and people share a link instead of going through the App Store.
+- **Talks to servers:** save highscores to PHP + MySQL (or any other backend) the way
+  `LoadVars` did back then, now with `fetch()`.
 - **Keeps what Flash was loved for:** vector graphics that look sharp at any size, tweens, masks,
   sound, and scripting for small games and interactive cartoons.
 
@@ -188,6 +190,7 @@ stays small, easy to debug and friendly to "view source".
 | `attachMovie`, `duplicateMovieClip` | create a symbol instance from the library by its linkage name | |
 | Drawing API (`beginFill`, `lineTo`, `curveTo`) | a `graphics` API on MovieClips that builds `Path2D`s | |
 | `loadMovie`, `LoadVars`, `XML` | `fetch()`, dynamic `import()`, JSON | |
+| `LoadVars.sendAndLoad()` to a PHP/MySQL highscore script | `fetch()` POST (form data or JSON) to any backend: PHP + MySQL, Node, serverless, … | `crossdomain.xml` became CORS headers; see below |
 | `SharedObject` (save games) | `localStorage` / IndexedDB | |
 | Fixed frame rate (12/24/30 fps) | `requestAnimationFrame` + fixed-step timing | the timeline runs at the movie's fps, whatever the screen's refresh rate |
 | Full screen, right-click menu | Fullscreen API, `contextmenu` event | on iPhone, see the iOS section below |
@@ -226,6 +229,46 @@ frog-in-a-blender.html
 ```
 
 (550 × 400 was Flash's default stage size.)
+
+### Talking to a server (highscores, like `LoadVars` + PHP/MySQL back then)
+
+The embedded player is ordinary JavaScript, so a movie can talk to any server with `fetch()`,
+no plugin needed. Sending form data keeps it as simple as `LoadVars` was:
+
+```js
+// frame script: send the score, get the top 10 back
+const res = await fetch("https://example.com/highscore.php", {
+  method: "POST",
+  body: new URLSearchParams({ name: playerName, score: String(score) }),
+});
+const top10 = await res.json();
+```
+
+```php
+<?php // highscore.php
+header("Access-Control-Allow-Origin: *"); // the modern crossdomain.xml
+header("Content-Type: application/json");
+$pdo = new PDO("mysql:host=localhost;dbname=game;charset=utf8mb4", "user", "secret");
+if (isset($_POST["name"], $_POST["score"])) {
+    $stmt = $pdo->prepare("INSERT INTO scores (name, score) VALUES (?, ?)");
+    $stmt->execute([mb_substr($_POST["name"], 0, 20), (int) $_POST["score"]]);
+}
+$top = $pdo->query("SELECT name, score FROM scores ORDER BY score DESC LIMIT 10");
+echo json_encode($top->fetchAll(PDO::FETCH_ASSOC));
+```
+
+Things to keep in mind:
+
+- **CORS:** if the movie and the PHP script live on different domains (for example itch.io and
+  your own server), the script must send `Access-Control-Allow-Origin`. Form data avoids the
+  extra "preflight" request that JSON bodies trigger.
+- **HTTPS on both sides:** an HTTPS page can't call an `http://` script (mixed content).
+- **SQL injection and XSS:** use prepared statements (as above), and escape names when you
+  show them on a web page.
+- **Cheating:** any score sent from the browser can be faked, just like in the Flash days. For
+  a hobby game, plausibility checks and rate limits on the server are enough.
+- The player can wrap all this in a small `LoadVars`-style helper such as
+  `net.sendAndLoad(url, vars)`.
 
 ## 📱 iPhone & iPad first
 
@@ -302,8 +345,9 @@ The editor and the player share the same document model and rendering code. Prev
 | Symbols | MovieClip (own timeline), Button (Up/Over/Down/Hit), Graphic (synced) | faithful mental model |
 | Timeline | layers (normal/guide/mask/folder), keyframes, labels, motion tweens (matrix + color transform + easing), shape tweens (path morphing with shape hints), onion skin | |
 | Scripting | JS/TS with an ActionScript-flavored API: `stop()`, `gotoAndPlay()`, `this.on("release")`, `onEnterFrame`, `hitTest()`, `startDrag()`. Monaco editor with typings; optionally Blockly for kids | familiar and modern |
-| Sandbox | published movies run in a sandboxed `<iframe>`; QuickJS-WASM as an option for untrusted portals | safe sharing |
+| Sandbox | published movies run in a sandboxed `<iframe>`; QuickJS-WASM as an option for untrusted portals. Sandboxed movies can still use `fetch()` when the server allows it via CORS | safe sharing |
 | Input | Pointer Events (touch, pen, mouse), keyboard, Gamepad API, optional on-screen controls | iPhone/iPad from day one |
+| Networking | `fetch()` plus a small `LoadVars`-style helper (`send`, `sendAndLoad`), with form data or JSON | highscores with PHP + MySQL or any other backend |
 | Audio | Web Audio API: event sounds plus stream sounds synced to the timeline; tap-to-play unlock | |
 | Filters / blend | Canvas shadows (drop shadow, glow) and composite operations (blend modes); SVG filters or WebGL shaders for blur, bevel and color matrix | Flash 8-era effects; `ctx.filter` is still behind a flag in Safari |
 | File format | `.json` project (diffable) plus a `.zip` bundle for assets. Publishes to a **single self-contained HTML** file | "just send the .html" is the new ".swf" |
@@ -356,4 +400,5 @@ The editor and the player share the same document model and rendering code. Prev
 - Tumult Hype: [website](https://tumult.com/hype/)
 - Web platform: [Canvas `filter` support (caniuse)](https://caniuse.com/mdn-api_canvasrenderingcontext2d_filter), [MDN: Canvas `filter`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter), [WebGPU in major browsers (web.dev)](https://web.dev/blog/webgpu-supported-major-browsers), [WebGPU implementation status](https://github.com/gpuweb/gpuweb/wiki/Implementation-Status), [Fullscreen API (caniuse)](https://caniuse.com/fullscreen)
 - iOS: [Home Screen web apps in iOS 26 (heise)](https://www.heise.de/en/news/iOS-26-and-iPadOS-26-Changed-web-app-behaviour-on-the-home-screen-10749652.html), [MacRumors how-to](https://www.macrumors.com/how-to/save-safari-bookmark-web-app-iphone-home-screen/), [Fullscreen in web games on iOS Safari (Bugnet)](https://bugnet.io/blog/how-to-fix-web-game-fullscreen-on-ios-safari), [Web Audio and the silent switch (Audjust)](https://www.audjust.com/blog/unmute-web-audio-on-ios), [unmute-ios-audio](https://github.com/feross/unmute-ios-audio)
+- Networking: [MDN: CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), [MDN: Mixed content](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content), [PHP: PDO prepared statements](https://www.php.net/manual/en/pdo.prepared-statements.php)
 - History: [Thoughts on Flash (Wikipedia)](https://en.wikipedia.org/wiki/Thoughts_on_Flash), [Web Design Museum](https://www.webdesignmuseum.org/web-design-history/steve-jobs-and-his-thoughts-on-flash-2010)
