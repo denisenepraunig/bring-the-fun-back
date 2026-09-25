@@ -1,0 +1,753 @@
+{
+  "format": "bring-back-flash",
+  "formatVersion": 1,
+  "name": "Star Catcher",
+  "width": 960,
+  "height": 540,
+  "frameRate": 30,
+  "backgroundColor": "#0B2466",
+  "publishSettings": { "html": { "title": "Star Catcher", "scaleMode": "showAll", "pageBackgroundColor": "#050F2E", "pagePadding": 16 } },
+  "library": {
+    "items": [
+      {
+        "name": "Star Shape",
+        "itemType": "graphic",
+        "timeline": {
+          "name": "Star Shape",
+          "layers": [
+            {
+              "name": "Layer 1",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 1,
+                  "elements": [
+                    {
+                      "elementType": "shape",
+                      "fills": [
+                        {
+                          "index": 1,
+                          "style": "radialGradient",
+                          "matrix": { "a": 0.08057, "b": 0, "c": 0, "d": 0.08057, "tx": -10, "ty": -12 },
+                          "entries": [
+                            { "ratio": 0, "color": "#FFF7C2" },
+                            { "ratio": 0.45, "color": "#FFE234" },
+                            { "ratio": 1, "color": "#FFC300" }
+                          ]
+                        }
+                      ],
+                      "strokes": [
+                        {
+                          "index": 1,
+                          "style": "solid",
+                          "thickness": 5,
+                          "color": "#E89C00",
+                          "joinType": "round",
+                          "capType": "round"
+                        }
+                      ],
+                      "edges": [
+                        {
+                          "fillStyle1": 1,
+                          "strokeStyle": 1,
+                          "path": "M 0 -58 L 15.87 -21.84 L 55.16 -17.92 L 25.68 8.34 L 34.09 46.92 L 0 27 L -34.09 46.92 L -25.68 8.34 L -55.16 -17.92 L -15.87 -21.84 Z"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Spinning Star",
+        "itemType": "movie clip",
+        "timeline": {
+          "name": "Spinning Star",
+          "layers": [
+            {
+              "name": "star",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 119,
+                  "tweenType": "motion",
+                  "motionTweenRotate": "clockwise",
+                  "motionTweenRotateTimes": 0,
+                  "tweenEasing": 0,
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Star Shape",
+                      "symbolType": "graphic",
+                      "loop": "loop",
+                      "firstFrame": 0,
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 119,
+                  "duration": 1,
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Star Shape",
+                      "symbolType": "graphic",
+                      "loop": "loop",
+                      "firstFrame": 0,
+                      "matrix": { "a": 0.99863, "b": -0.05234, "c": 0.05234, "d": 0.99863, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Hit Circle",
+        "itemType": "movie clip",
+        "timeline": {
+          "name": "Hit Circle",
+          "layers": [
+            {
+              "name": "Layer 1",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 1,
+                  "elements": [
+                    {
+                      "elementType": "shape",
+                      "fills": [{ "index": 1, "style": "solid", "color": "#FF00FF", "alpha": 0.5 }],
+                      "strokes": [],
+                      "edges": [
+                        {
+                          "fillStyle1": 1,
+                          "path": "M 74 0 Q 74 30.65 52.33 52.33 Q 30.65 74 0 74 Q -30.65 74 -52.33 52.33 Q -74 30.65 -74 0 Q -74 -30.65 -52.33 -52.33 Q -30.65 -74 0 -74 Q 30.65 -74 52.33 -52.33 Q 74 -30.65 74 0 Z"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Star",
+        "itemType": "movie clip",
+        "linkageExportForAS": true,
+        "linkageIdentifier": "Star",
+        "timeline": {
+          "name": "Star",
+          "layers": [
+            {
+              "name": "actions",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 11,
+                  "actionScript": [
+                    "stop();",
+                    "",
+                    "// a generous invisible circle makes the star easy to tap on phones",
+                    "hit_mc._visible = false;",
+                    "hitArea = hit_mc;"
+                  ]
+                },
+                { "index": 11, "duration": 1, "actionScript": ["this.removeMovieClip();"] }
+              ]
+            },
+            {
+              "name": "labels",
+              "frames": [
+                { "index": 0, "duration": 1, "name": "idle", "labelType": "name" },
+                { "index": 1, "duration": 11, "name": "shrink", "labelType": "name" }
+              ]
+            },
+            {
+              "name": "star",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 1,
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Spinning Star",
+                      "symbolType": "movie clip",
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 1,
+                  "duration": 10,
+                  "tweenType": "motion",
+                  "motionTweenRotate": "auto",
+                  "tweenEasing": -100,
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Spinning Star",
+                      "symbolType": "movie clip",
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 11,
+                  "duration": 1,
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Spinning Star",
+                      "symbolType": "movie clip",
+                      "matrix": { "a": 0, "b": 0, "c": 0, "d": 0, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "hit area",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 12,
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Hit Circle",
+                      "symbolType": "movie clip",
+                      "name": "hit_mc",
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Button Face",
+        "itemType": "graphic",
+        "timeline": {
+          "name": "Button Face",
+          "layers": [
+            {
+              "name": "Layer 1",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 1,
+                  "elements": [
+                    {
+                      "elementType": "shape",
+                      "fills": [{ "index": 1, "style": "solid", "color": "#C98E00" }],
+                      "strokes": [],
+                      "edges": [
+                        {
+                          "fillStyle1": 1,
+                          "path": "M -108 -36 L 108 -36 Q 130 -36 130 -14 L 130 26 Q 130 48 108 48 L -108 48 Q -130 48 -130 26 L -130 -14 Q -130 -36 -108 -36 Z"
+                        }
+                      ]
+                    },
+                    {
+                      "elementType": "shape",
+                      "fills": [
+                        {
+                          "index": 1,
+                          "style": "linearGradient",
+                          "matrix": { "a": 0, "b": 0.05127, "c": -0.05127, "d": 0, "tx": 0, "ty": 0 },
+                          "entries": [{ "ratio": 0, "color": "#FFE45C" }, { "ratio": 1, "color": "#FFC300" }]
+                        }
+                      ],
+                      "strokes": [],
+                      "edges": [
+                        {
+                          "fillStyle1": 1,
+                          "path": "M -108 -42 L 108 -42 Q 130 -42 130 -20 L 130 20 Q 130 42 108 42 L -108 42 Q -130 42 -130 20 L -130 -20 Q -130 -42 -108 -42 Z"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Play Button",
+        "itemType": "button",
+        "timeline": {
+          "name": "Play Button",
+          "layers": [
+            {
+              "name": "label",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 3,
+                  "elements": [
+                    {
+                      "elementType": "text",
+                      "textType": "static",
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": -130, "ty": -20.36 },
+                      "width": 260,
+                      "height": 44,
+                      "textRuns": [
+                        {
+                          "characters": "PLAY",
+                          "textAttrs": {
+                            "face": "_sans",
+                            "size": 34,
+                            "bold": true,
+                            "fillColor": "#0B2466",
+                            "alignment": "center",
+                            "letterSpacing": 2
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "face",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 1,
+                  "name": "Up",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Button Face",
+                      "symbolType": "graphic",
+                      "loop": "single frame",
+                      "firstFrame": 0,
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 1,
+                  "duration": 1,
+                  "name": "Over",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Button Face",
+                      "symbolType": "graphic",
+                      "loop": "single frame",
+                      "firstFrame": 0,
+                      "color": { "brightness": 0.12 },
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 2,
+                  "duration": 1,
+                  "name": "Down",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Button Face",
+                      "symbolType": "graphic",
+                      "loop": "single frame",
+                      "firstFrame": 0,
+                      "color": { "brightness": -0.12 },
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 3,
+                  "duration": 1,
+                  "name": "Hit",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "shape",
+                      "fills": [{ "index": 1, "style": "solid", "color": "#000000" }],
+                      "strokes": [],
+                      "edges": [{ "fillStyle1": 1, "path": "M -130 -42 L 130 -42 L 130 48 L -130 48 Z" }]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Retry Button",
+        "itemType": "button",
+        "timeline": {
+          "name": "Retry Button",
+          "layers": [
+            {
+              "name": "label",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 3,
+                  "elements": [
+                    {
+                      "elementType": "text",
+                      "textType": "static",
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": -130, "ty": -20.36 },
+                      "width": 260,
+                      "height": 44,
+                      "textRuns": [
+                        {
+                          "characters": "RETRY",
+                          "textAttrs": {
+                            "face": "_sans",
+                            "size": 34,
+                            "bold": true,
+                            "fillColor": "#0B2466",
+                            "alignment": "center",
+                            "letterSpacing": 2
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "face",
+              "frames": [
+                {
+                  "index": 0,
+                  "duration": 1,
+                  "name": "Up",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Button Face",
+                      "symbolType": "graphic",
+                      "loop": "single frame",
+                      "firstFrame": 0,
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 1,
+                  "duration": 1,
+                  "name": "Over",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Button Face",
+                      "symbolType": "graphic",
+                      "loop": "single frame",
+                      "firstFrame": 0,
+                      "color": { "brightness": 0.12 },
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 2,
+                  "duration": 1,
+                  "name": "Down",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "instance",
+                      "libraryItemName": "Button Face",
+                      "symbolType": "graphic",
+                      "loop": "single frame",
+                      "firstFrame": 0,
+                      "color": { "brightness": -0.12 },
+                      "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 0 }
+                    }
+                  ]
+                },
+                {
+                  "index": 3,
+                  "duration": 1,
+                  "name": "Hit",
+                  "labelType": "comment",
+                  "elements": [
+                    {
+                      "elementType": "shape",
+                      "fills": [{ "index": 1, "style": "solid", "color": "#000000" }],
+                      "strokes": [],
+                      "edges": [{ "fillStyle1": 1, "path": "M -130 -42 L 130 -42 L 130 48 L -130 48 Z" }]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "timelines": [
+    {
+      "name": "Scene 1",
+      "layers": [
+        {
+          "name": "actions",
+          "frames": [
+            {
+              "index": 0,
+              "duration": 1,
+              "actionScript": ["stop();", "", "play_btn.onRelease = function () {", "  gotoAndStop(\"game\");", "};"]
+            },
+            {
+              "index": 1,
+              "duration": 1,
+              "actionScript": [
+                "score = 0;",
+                "starCount = 0;",
+                "lastX = -1000;",
+                "lastY = -1000;",
+                "",
+                "function spawnStar() {",
+                "  starCount++;",
+                "  var star = attachMovie(\"Star\", \"star\" + starCount, starCount);",
+                "",
+                "  // somewhere new, fully on stage and below the score",
+                "  do {",
+                "    star._x = 90 + Math.random() * (Stage.width - 180);",
+                "    star._y = 150 + Math.random() * (Stage.height - 230);",
+                "  } while (Math.abs(star._x - lastX) + Math.abs(star._y - lastY) < 220);",
+                "  lastX = star._x;",
+                "  lastY = star._y;",
+                "",
+                "  star.onRelease = function () {",
+                "    this.enabled = false;        // no double taps while it shrinks",
+                "    this.gotoAndPlay(\"shrink\");  // shrinks, then removes itself",
+                "    score++;",
+                "    if (score >= 10) {",
+                "      gotoAndStop(\"gameover\");",
+                "    } else {",
+                "      spawnStar();",
+                "    }",
+                "  };",
+                "}",
+                "",
+                "spawnStar();"
+              ]
+            },
+            {
+              "index": 2,
+              "duration": 1,
+              "actionScript": ["retry_btn.onRelease = function () {", "  gotoAndStop(\"game\");", "};"]
+            }
+          ]
+        },
+        {
+          "name": "labels",
+          "frames": [
+            { "index": 0, "duration": 1, "name": "title", "labelType": "name" },
+            { "index": 1, "duration": 1, "name": "game", "labelType": "name" },
+            { "index": 2, "duration": 1, "name": "gameover", "labelType": "name" }
+          ]
+        },
+        {
+          "name": "text",
+          "frames": [
+            {
+              "index": 0,
+              "duration": 1,
+              "elements": [
+                {
+                  "elementType": "text",
+                  "textType": "static",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 139.44 },
+                  "width": 960,
+                  "height": 78,
+                  "textRuns": [
+                    {
+                      "characters": "STAR CATCHER",
+                      "textAttrs": {
+                        "face": "_sans",
+                        "size": 64,
+                        "bold": true,
+                        "fillColor": "#FFFFFF",
+                        "alignment": "center",
+                        "letterSpacing": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "elementType": "text",
+                  "textType": "static",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 221.04 },
+                  "width": 960,
+                  "height": 32,
+                  "textRuns": [
+                    {
+                      "characters": "Catch 10 stars!",
+                      "textAttrs": { "face": "_sans", "size": 24, "bold": false, "fillColor": "#8DB4FF", "alignment": "center" }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 1,
+              "duration": 1,
+              "elements": [
+                {
+                  "elementType": "text",
+                  "textType": "static",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 28, "ty": 24.28 },
+                  "width": 220,
+                  "height": 25,
+                  "textRuns": [
+                    {
+                      "characters": "SCORE",
+                      "textAttrs": {
+                        "face": "_sans",
+                        "size": 18,
+                        "bold": true,
+                        "fillColor": "#8DB4FF",
+                        "alignment": "left",
+                        "letterSpacing": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "elementType": "text",
+                  "textType": "dynamic",
+                  "name": "score_txt",
+                  "variableName": "score",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 28, "ty": 48.24 },
+                  "width": 220,
+                  "height": 55,
+                  "selectable": false,
+                  "textRuns": [
+                    {
+                      "characters": "0",
+                      "textAttrs": { "face": "_sans", "size": 44, "bold": true, "fillColor": "#FFFFFF", "alignment": "left" }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "duration": 1,
+              "elements": [
+                {
+                  "elementType": "text",
+                  "textType": "static",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 109.12 },
+                  "width": 960,
+                  "height": 87,
+                  "textRuns": [
+                    {
+                      "characters": "GAME OVER",
+                      "textAttrs": {
+                        "face": "_sans",
+                        "size": 72,
+                        "bold": true,
+                        "fillColor": "#FFD60A",
+                        "alignment": "center",
+                        "letterSpacing": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "elementType": "text",
+                  "textType": "static",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 209.2 },
+                  "width": 960,
+                  "height": 27,
+                  "textRuns": [
+                    {
+                      "characters": "YOUR SCORE",
+                      "textAttrs": {
+                        "face": "_sans",
+                        "size": 20,
+                        "bold": true,
+                        "fillColor": "#8DB4FF",
+                        "alignment": "center",
+                        "letterSpacing": 2
+                      }
+                    }
+                  ]
+                },
+                {
+                  "elementType": "text",
+                  "textType": "dynamic",
+                  "name": "final_txt",
+                  "variableName": "score",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 0, "ty": 241.44 },
+                  "width": 960,
+                  "height": 78,
+                  "selectable": false,
+                  "textRuns": [
+                    {
+                      "characters": "0",
+                      "textAttrs": { "face": "_sans", "size": 64, "bold": true, "fillColor": "#FFFFFF", "alignment": "center" }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "buttons",
+          "frames": [
+            {
+              "index": 0,
+              "duration": 1,
+              "elements": [
+                {
+                  "elementType": "instance",
+                  "libraryItemName": "Play Button",
+                  "symbolType": "button",
+                  "name": "play_btn",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 480, "ty": 352 }
+                }
+              ]
+            },
+            { "index": 1, "duration": 1, "elements": [] },
+            {
+              "index": 2,
+              "duration": 1,
+              "elements": [
+                {
+                  "elementType": "instance",
+                  "libraryItemName": "Retry Button",
+                  "symbolType": "button",
+                  "name": "retry_btn",
+                  "matrix": { "a": 1, "b": 0, "c": 0, "d": 1, "tx": 480, "ty": 400 }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

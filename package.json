@@ -1,0 +1,13 @@
+{
+  "name": "bring-back-flash",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Flash-style vector animations and little games for the modern web: a Flash-like document format and a small HTML5 player.",
+  "type": "module",
+  "scripts": {
+    "build": "node tools/publish.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
