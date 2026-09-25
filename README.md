@@ -4,6 +4,8 @@ Flash like fun: bringing back the fun/creative times of the internet. Flash-styl
 animations and little games, made for today's web. No plugins, just HTML5, and it runs on
 iPhone and iPad.
 
+▶️ **Play the demo:** https://denisenepraunig.github.io/bring-the-fun-back/star-catcher/
+
 ## What's here
 
 | Path | What it is |
@@ -21,9 +23,9 @@ npm run build                          # needs Node 18+, no dependencies
 open dist/star-catcher/index.html      # or any static web server
 ```
 
-The result is a single HTML file with the player and the movie inside. Upload it anywhere
-(for example to Cloudflare Pages, Netlify, GitHub Pages or itch.io) and open the link on your
-phone.
+The result is a single HTML file with the player and the movie inside, so it can be hosted
+anywhere. Every push to `main` publishes `dist/` to GitHub Pages
+([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
 
 ## Star Catcher: the tech demo
 
